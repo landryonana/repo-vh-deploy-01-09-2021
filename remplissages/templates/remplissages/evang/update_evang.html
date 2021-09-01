@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+modifier {{ evang.day }} | vh-cam:yaounde
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="wrap_rempl">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="mb-3">Modifier<b class="pl-1"> Évangelisation du {{ evang.day }}</b></h2>
+                </div>
+                <div class="col-md-6" style="display: flex;justify-content: flex-end;">
+                   <a href="{% url 'gallerie:gallerie_add_image' evang.id %}" class="btn btn-primary btn-with mb-3">
+                       Ajouter des images
+                    </a>
+                </div>
+            </div>
+            <div class="rempl" style="margin-bottom: 150px;">
+                <div class="rempl_descrip">
+                    {% if add_modal_site_errors %}
+                    <div style="background-color: #dc3545; color: #fff;padding: 7px; text-align: center;">
+                        {% for error in add_modal_site_errors %}
+                            <b>{{ error }}</b>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <form id="id_evang_form" action="{% url 'rempl:change_rempl' evang.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% for field in form %}
+                            {% if field.label == "Lieu d'évangelisation" %}
+                                    <div class="col-md-6">
+                                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                            <div>
+                                                <label for="{{ field.id_for_label }}">{{field.label}}</label>
+                                                <button type="button" data-url="{% url 'rempl:ajout_modal_site_evang_update' evang.id %}" 
+                                                        id="ajout_modal_site" class="btn btn-primary">
+                                                    <img src="{% static 'images/icon/icon-addlink.svg' %}" alt="">
+                                                </button>
+                                            </div>
+                                            {% if add_modal_site_reussi %}
+                                            <div style="background-color: rgb(25, 218, 153); padding: 15px 0px;text-align: center; margin-bottom: 5px;">
+                                                <b style="color: #fff;">Vous avez ajouté un nouveau site avec success</b>
+                                            </div>
+                                            {% endif %}
+                                            {% render_field field class="form-control" %}
+                                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                                            {% for error in field.errors %}
+                                                <p class="pt-2 pb-2 pl-2 pr-2" style="background-color: #dc3545;border-radius: 7px;">
+                                                    {{ error }}
+                                                </p>
+                                            {% endfor %} 
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="col-md-6">
+                                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                            <label for="{{ field.id_for_label }}">{{field.label}}</label>
+                                            {% render_field field class="form-control" %}
+                                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                                            {% for error in field.errors %}
+                                                <p class="pt-2 pb-2 pl-2 pr-2" style="background-color: #dc3545;border-radius: 7px;">
+                                                    {{ error }}
+                                                </p>
+                                            {% endfor %} 
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-success btn-with">
+                                Enregistrer
+                            </button>
+                            <a href="{% url 'rempl:liste_site' %}" class="btn btn-secondary btn-with">
+                                Annuler
+                            </a> 
+                            <a href="{% url 'rempl:delete_rempl' evang.id %}" class="btn btn-danger btn-with">Supprimer</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ajout-site">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+{% endblock %}

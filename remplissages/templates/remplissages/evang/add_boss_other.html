@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+paramètres
+{% endblock %}
+
+
+{% block content %}
+<div class="wrap_user_infos">
+    <div class="user_infos">
+        <div class="row" style="display: flex; justify-content: center;">
+            <div class="col-md-6">
+                <div id="user_reg">
+                    <form action="{% url 'rempl:add_boos_other' %}" method="post" 
+                        id="js_user_form" style="margin-bottom: 55px;">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h4 class="modal-title">Ajouter un nouveau participant</h4>
+                        </div>
+                        {% if is_add %}
+                        <div class="row" id="is_add">
+                            <div class="col-md-12 mt-2">
+                                <p class="pt-2 pb-2 pl-2 pr-2" 
+                                    style="background-color: #256433;
+                                            border-radius: 7px;
+                                            color: #fff;
+                                            font-weight: 600; text-align: center;">
+                                    ajout réussie
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="modal-body">
+                            {% for field in form %}
+                            {% if request.user.is_superuser %}
+                            <div class="form-group {% if field.errors %}has-error{% endif %}" style="overflow: auto;">
+                                <label for="{{ field.id_for_label }}">{{field.label}}</label> 
+                                {% render_field field class="form-control" %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% for error in field.errors %}
+                                    <p class="pt-2 pb-2 pl-2 pr-2" style="background-color: #dc3545;border-radius: 7px;">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="form-group {% if field.errors %}has-error{% endif %}" style="overflow: auto;">
+                                <label for="{{ field.id_for_label }}">{{field.label}}</label> 
+                                {% render_field field class="form-control" %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% for error in field.errors %}
+                                    <p class="pt-2 pb-2 pl-2 pr-2" style="background-color: #dc3545;border-radius: 7px;">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %} 
+                            </div>
+                            {% endif %} 
+                            
+                            {% endfor %}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-with">Enregistrer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

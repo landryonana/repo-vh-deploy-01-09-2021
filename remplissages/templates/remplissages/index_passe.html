@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}
+
+{% if evang %}
+remplissages|{{evang}}|vh-cam:yaoundé
+{% else %}
+remplissages|{{date}}|vh-cam:yaoundé
+{% endif %}
+    
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class=" wrap_config_evan rempl-form_serach">
+            <form id="rempl-form-submit" action="{% url 'rempl:index_rempl_serach' %}">
+                <input type="date" name="date" id="rempl-date-input">
+                <button class="btn btn-success btn-with" type="submit">Allez-y</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="wrap-obsol-evang">
+            <div class="obsol-enag-info">
+                {% if evang %}
+                <div class="pt-2">
+                    <h2 style="color: #b01f2c;">Évangélisation du {{ evang.day|date:"d/m/y" }}</h2>
+                </div>
+                {% else %}    
+                <div class="pt-2">
+                    <h2 style="color: #b01f2c;">Évangélisation du {{date}}</h2>
+                </div>
+                {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="pd-none">
+            <h2 class="mb-3 h-deco">Configurer votre moment d'évangelisation</h2>
+            <div class="rempl">
+                <div class="rempl_descrip">
+                    <dl class="dl-horizontal"> 
+                        {% if evang %}
+                        <div class="pt-2">
+                            <div class="row">
+                                <dt class="col-sm-6">Évangélisation du :</dt> 
+                                <dd class="col-sm-6">{{ evang.day|date:"d/m/y" }}</dd> 
+                            </div>
+
+                            <div class="row">
+                                <dt class="col-sm-6">Créer par :</dt> 
+                                <dd class="col-sm-6">{{evang.author}}</dd> 
+                            </div>
+                            
+                            <div class="row">
+                                <dt class="col-sm-6">Lieu :</dt> 
+                                <dd class="col-sm-6">{{ evang.site }}</dd> 
+                            </div>
+
+                            <div class="row">
+                                <dt class="col-sm-6">Heure de début :</dt> 
+                                <dd class="col-sm-6">{{ evang.heure_de_debut|time:'H:i' }}</dd> 
+                            </div>
+                        
+                            <div class="row">
+                                <dt class="col-sm-6">Heure de fin :</dt> 
+                                <dd class="col-sm-6">{{ evang.heure_de_fin|time:'H:i' }}</dd>
+                            </div>
+                
+                            <div class="row">
+                                <dt class="col-sm-6">Durée :</dt> 
+                                <dd class="col-sm-6">{{ evang.dure }}</dd>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <a href="{% url 'rempl:liste_site' %}" class="btn btn-link ml-3">Liste des évangelisations</a>
+                        </div>
+                        {% else %}    
+                        <div class="pt-2">
+                            <div class="row">
+                                <dt class="col-sm-6">Évangélisation du :</dt> 
+                                <dd class="col-sm-6">-------</dd> 
+                            </div>
+
+                            <div class="row">
+                                <dt class="col-sm-6">Créer par :</dt> 
+                                <dd class="col-sm-6">-------</dd> 
+                            </div>
+                            
+                            <div class="row">
+                                <dt class="col-sm-6">Lieu :</dt> 
+                                <dd class="col-sm-6">-------</dd> 
+                            </div>
+
+                            <div class="row">
+                                <dt class="col-sm-6">Heure de début :</dt> 
+                                <dd class="col-sm-6">-------</dd> 
+                            </div>
+                        
+                            <div class="row">
+                                <dt class="col-sm-6">Heure de fin :</dt> 
+                                <dd class="col-sm-6">-------</dd>
+                            </div>
+                
+                            <div class="row">
+                                <dt class="col-sm-6">Durée :</dt> 
+                                <dd class="col-sm-6">-------</dd>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="pd-none">
+            <h2 class="mb-3 h-deco">
+                Liste des présents
+            </h2> 
+            <div class="rempl">
+                <div class="table-responsive tab-elmt scroll-tab-elmt-evang-boss">
+                    <table class="table table-hover" id="table-evang">
+                        <thead>
+                            <tr>
+                              <th scope="col" rowspan="2">#</th>
+                              <th scope="col" rowspan="2">Nom et Prenom</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for boss in evang.boss.all %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ boss.nom_et_prenom }}</td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="rempl-inline account-site">
+            <div class="rempl_descrip">
+                {% if evang.site %}
+                <div class="evang-site-nom">
+                    <h2 class="ml-3 h-deco">
+                        <b>{{ evang.site }}</b>
+                     </h2>
+                     <small>Lieu du moment d'évangelisaton du  {{ evang.day|date:"d/m/Y" }}</small>
+                     <a href="{% url 'rempl:liste_site' %}" class="btn btn-link ml-3">Liste des sites</a>
+                </div>
+                {% else %}
+                <h2 class="ml-3" style="color: #b01f2c;">
+                    pas de site
+                </h2>
+                {% endif %}
+            </div>
+            <div class="site-evang">
+                <img class="img-fluid" src="{% if evang.site.image %}{{ evang.site.image.url }}
+                    {% else %}{% static 'images/default_lieu.jpg' %}{% endif %}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="head_person_evang">
+            <h2 class="h-deco">
+                {% if evang %}
+                Personnes évangelisés le {{evang.day|date:"d/m/Y"}}
+                {% else %}
+                Personnes évangelisés le {{date}}
+                {% endif %}
+            </h2>
+            {% if evang %}
+            <a href="{% url 'rempl:add_personne_passe' evang.pk %}" 
+            class="btn btn-success btn-with">Ajouter</a>
+            {% endif %}
+            
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive tab-elmt scroll-tab-elmt">
+            <table class="table table-bordered table-hover" id="person-evang">
+                <thead>
+                    <tr>
+                        <th scope="col" rowspan="2">#</th>
+                        <th scope="col" rowspan="2">Date</th>
+                        <th scope="col" rowspan="2">Site dévangelisation</th>
+                        <th scope="col" rowspan="2">Nom et prénom</th>
+                        <th scope="col" rowspan="2">Contact</th>
+                        <th scope="col" rowspan="2">Quartier</th>
+                        <th scope="col" colspan="4">Accepté JÉSUS</th>
+                        <th scope="col" rowspan="2">Boss</th>
+                        <th scope="col" colspan="3">Heure</th>
+                        <th scope="col" rowspan="2" style="background-color: #d4ad14;">Whatsapp ?</th>
+                        <th scope="col" rowspan="2">Sujets de prière</th>
+                        <th scope="col" rowspan="2">Témoignages</th>
+                        <th scope="col" rowspan="2">Action</th>
+                    </tr>
+                    <tr>
+                        <td>Oui</td>
+                        <td>Non</td>
+                        <td>Déjà</td>
+                        <td>Indécis</td>
+                        <td>Début</td>
+                        <td>Fin</td>
+                        <td>Durée</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% include 'remplissages/personne/table_person_evang.html' %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-personne-detail">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content"></div>
+    </div>
+</div>
+{% endblock %}

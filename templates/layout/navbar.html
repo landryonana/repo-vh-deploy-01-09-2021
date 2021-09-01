@@ -1,0 +1,141 @@
+{% load static %}
+<nav class="rapport_nav account_nav {% if active == 'gallerie' %}gallerie_nav{% endif %}">
+    <div class="nav-bar-first">
+        <div class="sidebar-button">
+            <i class='bx bx-menu sibebarBtn'></i>
+            <div class="navbar-head">
+                <span class="dashboard">VH-CAM</span>
+                <span style="font-size: 10px;position: relative;top: -7px;">YAOUNDE</span>
+            </div>
+        </div>
+        <div class="profile-details">
+            <img src="{% if user.profile.image %}{{ user.profile.image.url }}
+                      {% else %}{% static 'images/profile.png' %}{% endif %}" alt="">
+            <div class="dropdo">
+                <ul>
+                    <li {% if active == 'index_hone' %}class="active"{% endif %}>
+                        <a href="{% url 'accounts:param' %}"><i class='bx bx-cog'></i><span>Paramètrage</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:user_logout' %}"><i class='bx bx-log-out'></i><span>Se déconnecter</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="rempl-infos-submit">
+        {% if is_save %}
+            <p id="is_save" class="pt-2 pb-2 pl-2 pr-2">
+                {% if personne_nom_passe %}
+                <b>{{ personne_nom_passe }}</b> a été ajouter avec succèss
+                {% elif personne_nom %}
+                <b>{{ personne_nom }}</b> a été ajouter avec succèss
+                {% elif evang_ajouter %}
+                <b>Évangelisation du {{ evang_ajouter.evang_date }}</b> a été ajouter avec succèss
+                {% elif site_ajout %}
+                <b>{{ site_ajout.nom }}</b> a été ajouter avec succèss
+                {% elif participant_ajout %}
+                <b>{{ participant_ajout.nom }}</b> a été ajouter avec succèss
+                {% elif image %}
+                    {{ image }}
+                {% elif add_user %}
+                <b>{{ add_user.nom }}</b> a été ajouter avec succèss
+                {% endif %}    
+            </p>
+            <script>
+                setTimeout(()=>{
+                    $("#is_save").html("");
+                    $("#is_save").hide();
+                }, 20000)
+            </script>
+            {% endif %}
+            {% if is_update %}
+                <p id="is_update" class="pt-2 pb-2 pl-2 pr-2">
+                    {% if user_prof %}
+                        Mise à jour réussie de <b style="color: rgb(10, 10, 10);">{{user_prof.username}}</b>
+                    {% elif personne_update and personne %}
+                        Mise à jour réussie de personne : 
+                        <b style="color: rgb(10, 10, 10);">
+                            {{personne.nom}} 
+                        </b>
+                        >>en>>
+                        <b style="color: rgb(10, 10, 10);">
+                             {{personne_update.nom}}
+                        </b>
+                    {% elif evang_update and evang_old %}
+                        Mise à jour réussie de :
+                        <b style="color: rgb(10, 10, 10);">
+                            Évangelisation du {{evang_old.evang_date}} 
+                        </b>
+                        >>en>>
+                        <b style="color: rgb(10, 10, 10);">
+                            Évangelisation du {{evang_update.evang_date}}
+                        </b>
+                    {% elif site_update and site %}
+                        Mise à jour réussie du site :
+                        <b style="color: rgb(10, 10, 10);">
+                            {{site.nom}} 
+                        </b>
+                        >>en>> 
+                        <b style="color: rgb(10, 10, 10);">
+                            {{site_update.nom}}
+                        </b>
+                    {% elif participant_update and participant_old %}
+                        Mise à jour réussie du participant :
+                        <b style="color: rgb(10, 10, 10);">
+                            {{participant_old.nom}} 
+                        </b>
+                        >>en>> 
+                        <b style="color: rgb(10, 10, 10);">
+                            {{participant_update.nom}}
+                        </b>
+                        
+                        
+                    {% elif add_suivi_personne %}
+                        Mise à jour réussie du suivi de <b style="color: rgb(10, 10, 10);">{{ add_suivi_personne }}</b>
+                    {% elif image_update %}
+                        {{ image_update }}
+                    {% elif evang_active %}
+                    <b style="color: rgb(10, 10, 10);">
+                        Évangelisation du {{ evang_active.evang_date }} selectionné
+                    </b>
+                    {%endif%}
+                </p>
+                <script>
+                    setTimeout(()=>{
+                        $("#is_update").html("");
+                        $("#is_update").hide();
+                    }, 20000)
+                </script>
+            {% endif %}
+
+            {% if is_delete %}
+            <p id="is_delete" class="pt-2 pb-2 pl-2 pr-2">
+                
+                {% if personne_delete %}
+                    <b>{{ personne_delete.nom_et_prenom }}</b> a été supprimé avec success
+                {% elif evang_session %}
+                    <b>{{ evang_session.day }}</b> a été supprimé avec success
+                {% elif evang_delete %}
+                <b>Évangelisation du {{evang_delete.evang_date}}</b> a été supprimé avec success
+                {% elif site_delete %}
+                <b>{{site_delete.nom}}</b> a été supprimé avec success
+                {% elif part_delete %}
+                <b>{{part_delete.nom}}</b> a été supprimé avec success
+                {% elif image_delete %}
+                <b>{{image_delete}}</b>
+                {% elif user_delete %}
+                    {{ user_delete.nom }} a été supprimé avec success
+                {% endif %}
+
+            </p>
+            <script>
+                setTimeout(()=>{
+                    $("#is_delete").html("");
+                    $("#is_delete").hide();
+                }, 20000)
+            </script>
+        {% endif %}
+
+    </div>
+</nav>

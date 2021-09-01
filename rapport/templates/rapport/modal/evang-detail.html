@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <h4 class="modal-title">sortie du <b>mois {{evang.mois}}</b></h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button> 
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="rapport-diagram">
+                <div id="pie-detail"></div>
+            </div>
+        </div>
+    </div>
+    <dl class="dl-horizontal"> 
+        <div class="pt-3">
+            <div class="row pt-3">
+                <dt class="col-sm-12">Liste des sorties </dt> 
+                <div class="col-sm-12" style="max-height: 105px; background-color: rgb(183, 187, 185); overflow: auto;padding: 15px 7px;">
+                    {% for evg in evangs %}
+                        <li>{{ evg }}</li>
+                    {% endfor %} 
+                </div> 
+            </div>
+            <div class="row pt-3">
+                <dt class="col-sm-6">Nombre de sorties : </dt> 
+                <div class="col-sm-6">{{ evang.count_sortie }}</div> 
+            </div>
+            <hr>
+            <div class="row pt-3">
+                <dt class="col-sm-6">Nombre de femmes :</dt> 
+                <div class="col-sm-6">{{ evang.count_femme }}</div> 
+            </div>
+            <div class="row pt-3">
+                <dt class="col-sm-6">Nombre d'hommes :</dt> 
+                <div class="col-sm-6">{{ evang.count_homme }}</div> 
+            </div>
+            <hr>
+            <div class="row pt-3">
+                <dt class="col-sm-6">Nombre de Boss :</dt> 
+                <div class="col-sm-6"> {{evang.count_boss}}</div> 
+            </div>
+            <hr>
+            <div class="row pt-3 table-secondary">
+                <dt class="col-sm-6">Nombre de personnes ayant été évangelisé :</dt> 
+                <div class="col-sm-6"> {{evang.ps_evg}}</div> 
+            </div>
+            <div class="row pt-3 table-success">
+                <dt class="col-sm-6">Nombre de personnes ayant récu JÉSUS :</dt> 
+                <div class="col-sm-6"> {{evang.oui_JESUS}}</div>
+            </div>
+            <div class="row pt-3 table-info">
+                <dt class="col-sm-6">Nombre de personnes ayant intégré l'église :</dt> 
+                <div class="col-sm-6"> {{evang.rester}}</div>
+            </div>
+            <hr>
+            <h2 class="h-deco">Observations</h2>
+            <div class="row pt-3">
+                <div class="col-md-8">
+                    <ul>
+                        {% for obser in evang.observations %}
+                            {% if obser %}
+                                <li><div style="color: red;" class="col-sm-12"> {{obser}}</div></li>
+                            {% endif %}
+                        {% empty %}
+                            <p>pas d'observations pour le moment</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </dl> 
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+</div>
+
+{% block script %}
+    <script>
+        var data = [{
+            values: [{{ evang.count_femme }}, {{ evang.count_homme }}],
+            labels: ['Femmes', 'Homme'],
+            type: 'pie'
+        }];
+        
+        var layout = {
+            height: 400,
+            width: 400
+        };
+        Plotly.newPlot('pie-detail', data, layout);
+
+    </script>        
+{% endblock script %}
