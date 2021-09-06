@@ -17,10 +17,8 @@ ALLOWED_HOSTS = ['vasedhonneurcameroun-yde.herokuapp.com', 'www']#'.pythonanywhe
 # Application definition
 
 INSTALLED_APPS = [
-
     #==================App accounts
     'accounts.apps.AccountsConfig',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,25 +27,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary_storage',
     'cloudinary',
-
     #==========my library
     'widget_tweaks',
-
     #==================App remplissage
     'remplissages.apps.RemplissagesConfig',
-
     #==================App rapport
     'rapport.apps.RapportConfig',
-
     #==================App suivie
     'suivie.apps.SuivieConfig',
-
     #==================App gallerie
     'gallerie.apps.GallerieConfig',
-
     #==================App gallerie
     'temoignage.apps.TemoignageConfig',
-
     #==================App history
     'history.apps.HistoryConfig'
 ]
@@ -107,6 +98,17 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'ddm6vmju9o3f9k',
+#        'USER': 'yswizrnkuftzub',
+#        'PASSWORD': 'dd22abf3f9ac6d168cd86ef0dc0e30079acaae86a97cc344c1c3e60d077ad7e3',
+#        'HOST': 'ec2-107-22-18-26.compute-1.amazonaws.com',
+#        'POST': '5432',
+#    }
+#}
 
 
 # Password validation
